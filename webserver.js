@@ -33,3 +33,4 @@ app.post('/route', cors(allowedOrigins) , (req, res, next) => {
     res.send({ success: false});
   }
 });
+// test
