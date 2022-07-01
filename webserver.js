@@ -8,7 +8,7 @@ const app = express();
 
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
-
+const countries = require('./countries.js'); // Importamos el archivo countries.js
 
 app.use(cors()); /* NEW */
 app.use(bodyParser.json()); // Uso de body parser
@@ -25,6 +25,11 @@ console.log('Test');
 
 //req es el objeto solicitado al servidor
 //res es el objeto que se envía al cliente
+
+app.get('/countries', cors(allowedOrigins), (req,res, next) =>{
+  res.send(countries);
+});
+
 app.post('/route', cors(allowedOrigins) , (req, res, next) => {
   console.log(req.body.user);
   if (req.body.user === 'francisco' && req.body.password === '123') {
