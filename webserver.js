@@ -21,15 +21,32 @@ app.listen(PORT, () =>{
   console.log(`The server is listening on ${PORT}`);
 });
 
-console.log('Test');
+let countryAndCode = countries.map(country => {
+  let countryAndCode = {"country": country.countryName, "code": country.countryShortCode};
+  return countryAndCode
+});
+
+/* Obtener ciudades de un pais */
+
+let getCities = (countryCode) => {
+  let cities = countries.filter(country => country.countryShortCode === countryCode);
+  return cities[0].regions;
+}
 
 //req es el objeto solicitado al servidor
 //res es el objeto que se envía al cliente
 
 app.get('/countries', cors(allowedOrigins), (req,res, next) =>{
-  res.send(countries);
+  console.log('Get countries called');
+  res.send(countryAndCode);
 });
 
+app.get('/:code/cities', cors(allowedOrigins), (req,res, next) =>{
+  console.log(getCities(req.params.code));
+  res.send(getCities(req.params.code))
+});
+
+/*
 app.post('/route', cors(allowedOrigins) , (req, res, next) => {
   console.log(req.body.user);
   if (req.body.user === 'francisco' && req.body.password === '123') {
@@ -38,4 +55,5 @@ app.post('/route', cors(allowedOrigins) , (req, res, next) => {
     res.send({ success: false});
   }
 });
+*/
 // test
