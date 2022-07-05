@@ -3083,10 +3083,6 @@ const countries =
           "shortCode": "MA"
         },
         {
-          "name": "Marga-Marga",
-          "shortCode": ""
-        },
-        {
           "name": "Maule",
           "shortCode": "ML"
         },
