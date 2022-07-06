@@ -26,6 +26,12 @@ let countryAndCode = countries.map(country => {
   return countryAndCode
 });
 
+/*Middleware test, aca podria ir haciendo llamadas a un dashboard para medir analiticas de solicitudes*/
+app.use((req, res, next) => {
+  console.log(`${req.method} Request received to ${req.url}`);
+  next();
+});
+
 /* Obtener ciudades de un pais */
 
 let getCities = (countryCode) => {
@@ -37,12 +43,10 @@ let getCities = (countryCode) => {
 //res es el objeto que se envía al cliente
 
 app.get('/countries', cors(allowedOrigins), (req,res, next) =>{
-  console.log('Get countries called');
   res.send(countryAndCode);
 });
 
 app.get('/:code/cities', cors(allowedOrigins), (req,res, next) =>{
-  console.log(getCities(req.params.code));
   res.send(getCities(req.params.code))
 });
 
