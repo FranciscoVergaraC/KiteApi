@@ -6,12 +6,16 @@ const express = require('express');
 // Instantiate the app nodehere
 const app = express();
 
+const morgan = require('morgan'); /*Usamos morgan como middleware para registrar las solicitudes.  */
+morgan.token('body', req => JSON.stringify(req.body));
+
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
 const countries = require('./countries.js'); // Importamos el archivo countries.js
 
 app.use(cors()); /* NEW */
 app.use(bodyParser.json()); // Uso de body parser
+app.use(morgan('dev')); // Usamos morgan como middleware para registrar las solicitudes.
 
 const PORT = process.env.PORT || 4001;
 const allowedOrigins = ['http://localhost:4001'];
@@ -26,11 +30,11 @@ let countryAndCode = countries.map(country => {
   return countryAndCode
 });
 
-/*Middleware test, aca podria ir haciendo llamadas a un dashboard para medir analiticas de solicitudes*/
+/*Middleware test, aca podria ir haciendo llamadas a un dashboard para medir analiticas de solicitudes
 app.use((req, res, next) => {
   console.log(`${req.method} Request received to ${req.url}`);
   next();
-});
+});*/
 
 /* Obtener ciudades de un pais */
 
