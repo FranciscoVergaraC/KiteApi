@@ -12,6 +12,9 @@ morgan.token('body', req => JSON.stringify(req.body));
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
 const countries = require('./countries.js'); // Importamos el archivo countries.js
+const sqlite3 = require('sqlite3'); // Importamos sqlite para trabajar con la base de datos. Ojo que hay que instalar via NPM sqlite3
+const db = new sqlite3.Database('./kiteApiDB.db'); // creamos la conexion con la base de datos de la DB
+
 
 app.use(cors()); /* NEW */
 app.use(bodyParser.json()); // Uso de body parser
