@@ -9,12 +9,20 @@ const app = express();
 const morgan = require('morgan'); /*Usamos morgan como middleware para registrar las solicitudes.  */
 morgan.token('body', req => JSON.stringify(req.body));
 
+const { printQueryResults } = require('./utils');
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
 const countries = require('./countries.js'); // Importamos el archivo countries.js
-const sqlite3 = require('sqlite3'); // Importamos sqlite para trabajar con la base de datos. Ojo que hay que instalar via NPM sqlite3
+const sqlite3 = require('sqlite3').verbose(); // Importamos sqlite para trabajar con la base de datos. Ojo que hay que instalar via NPM sqlite3 https://www.npmjs.com/package/sqlite3
 const db = new sqlite3.Database('./kiteApiDB.db'); // creamos la conexion con la base de datos de la DB
 
+/* --> Esta funcion me permite crear un registro en la DB, ya esta probada y funcional , para que se pueda usar en el futuro.
+db.run("INSERT INTO spot (id, name, countryCode) VALUES ('2', 'Desembocadura', 'CL');");
+*/
+
+db.all("SELECT * FROM spot", (error, rows) => {
+  printQueryResults(rows);
+});
 
 app.use(cors()); /* NEW */
 app.use(bodyParser.json()); // Uso de body parser
