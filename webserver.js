@@ -13,16 +13,16 @@ const { printQueryResults } = require('./utils');
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
 const countries = require('./countries.js'); // Importamos el archivo countries.js
-const sqlite3 = require('sqlite3').verbose(); // Importamos sqlite para trabajar con la base de datos. Ojo que hay que instalar via NPM sqlite3 https://www.npmjs.com/package/sqlite3
-const db = new sqlite3.Database('./kiteApiDB.db'); // creamos la conexion con la base de datos de la DB
+var db = require("./database.js")
 
 /* --> Esta funcion me permite crear un registro en la DB, ya esta probada y funcional , para que se pueda usar en el futuro.
 db.run("INSERT INTO spot (id, name, countryCode) VALUES ('2', 'Desembocadura', 'CL');");
 */
-
+/*
 db.all("SELECT * FROM spot", (error, rows) => {
   printQueryResults(rows);
 });
+*/
 
 app.use(cors()); /* NEW */
 app.use(bodyParser.json()); // Uso de body parser
@@ -64,6 +64,21 @@ app.get('/countries', cors(allowedOrigins), (req,res, next) =>{
 app.get('/:code/cities', cors(allowedOrigins), (req,res, next) =>{
   res.send(getCities(req.params.code))
 });
+
+app.get('/spot', (req, res, next) => {
+  var sql = "select * from spot"
+  var params = []
+  db.all(sql, params, (err, rows) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.json({
+        "rows": rows
+      })
+    });
+});
+
 
 /*
 app.post('/route', cors(allowedOrigins) , (req, res, next) => {
