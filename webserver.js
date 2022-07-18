@@ -79,6 +79,22 @@ app.get('/spot', (req, res, next) => {
     });
 });
 
+/*La funcionalidad POST ya esta probada en DB, ahora hay que agregar los parametros adicionales*/
+
+app.post('/spotEdit', cors(allowedOrigins), (req, res, next) => {
+  var sql = `UPDATE spot SET name = "${req.body.name}", countryCode = "${req.body.countryCode}" WHERE id = ${req.body.id}`
+  console.log(sql)
+  db.run(sql, function(err, result) {
+    if (err) {
+      res.status(400).json({"error":err.message});
+      return;
+    }
+    res.json({
+      "message": "success",
+      "id": this.lastID
+    })
+  })
+});
 
 /*
 app.post('/route', cors(allowedOrigins) , (req, res, next) => {
