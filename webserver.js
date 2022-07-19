@@ -82,7 +82,7 @@ app.get('/spot', (req, res, next) => {
 /*La funcionalidad POST ya esta probada en DB, ahora hay que agregar los parametros adicionales*/
 
 app.post('/spotEdit', cors(allowedOrigins), (req, res, next) => {
-  var sql = `UPDATE spot SET name = "${req.body.name}", countryCode = "${req.body.countryCode}" WHERE id = ${req.body.id}`
+  var sql = `UPDATE spot SET name = "${req.body.name}", countryCode = "${req.body.countryCode}", regionCode= "${req.body.regionCode}", windDirection= "${req.body.windDirection}"  WHERE id = ${req.body.id}`
   console.log(sql)
   db.run(sql, function(err, result) {
     if (err) {
