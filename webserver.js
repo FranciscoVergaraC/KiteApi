@@ -96,6 +96,36 @@ app.post('/spotEdit', cors(allowedOrigins), (req, res, next) => {
   })
 });
 
+app.post('/newspot', cors(allowedOrigins), (req, res, next) => {
+  var sql = `INSERT INTO spot (name, countryCode, regionCode, windDirection) VALUES ("${req.body.name}", "${req.body.countryCode}", "${req.body.regionCode}", "${req.body.windDirection}")`
+  console.log(sql)
+  db.run(sql, function(err, result) {
+    if (err) {
+      res.status(400).json({"error":err.message});
+      return;
+    }
+    res.json({
+      "message": "success",
+      "id": this.lastID
+    })
+  })
+})
+
+app.post('/deletespot', cors(allowedOrigins), (req, res, next) => {
+  var sql = `DELETE FROM spot WHERE id = ${req.body.id}`
+  console.log(sql)
+  db.run(sql, function(err, result) {
+    if (err) {
+      res.status(400).json({"error":err.message});
+      return;
+    }
+    res.json({
+      "message": "success",
+      "id": this.lastID
+    })
+  })
+})
+
 /*
 app.post('/route', cors(allowedOrigins) , (req, res, next) => {
   console.log(req.body.user);
