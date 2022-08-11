@@ -13,6 +13,7 @@ const { printQueryResults } = require('./utils');
 const cors = require('cors'); //Import cors library, para poder hacer pruebas en DEV
 const bodyParser = require('body-parser'); // Permite parsear el body de una peticion, necesita instalacion via NPM https://www.npmjs.com/package/body-parser
 const countries = require('./countries.js'); // Importamos el archivo countries.js
+const geoDb = require('./countries+states+cities.js') // Nueva DB
 var db = require("./database.js")
 
 /* --> Esta funcion me permite crear un registro en la DB, ya esta probada y funcional , para que se pueda usar en el futuro.
@@ -36,10 +37,11 @@ app.listen(PORT, () =>{
   console.log(`The server is listening on ${PORT}`);
 });
 
-let countryAndCode = countries.map(country => {
-  let countryAndCode = {"country": country.countryName, "code": country.countryShortCode};
+let countryAndCode = geoDb.map(country => {
+  let countryAndCode = {"country": country.name, "code": country.id};
   return countryAndCode
-});
+}); /*Probado y funcional */
+
 
 /*Middleware test, aca podria ir haciendo llamadas a un dashboard para medir analiticas de solicitudes
 app.use((req, res, next) => {
@@ -52,7 +54,13 @@ app.use((req, res, next) => {
 let getCities = (countryCode) => {
   let cities = countries.filter(country => country.countryShortCode === countryCode);
   return cities[0].regions;
-}
+} /*Esta funcion esta deprecada, se deberia eliminar, hay que reemplazar el codigo de getCities por getRegions */
+
+let getRegions = (countryCode) => {
+  let states = geoDb.filter(country => country.id == countryCode);
+  return states[0].states;
+} /*Funcional */
+
 
 //req es el objeto solicitado al servidor
 //res es el objeto que se envía al cliente
